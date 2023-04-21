@@ -1,0 +1,22 @@
+{
+  "name": "electron-base",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aliaksandra-Leanovich/electron-base.git"
+  },
+  "author": "Aliaksandra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Aliaksandra-Leanovich/electron-base/issues"
+  },
+  "homepage": "https://github.com/Aliaksandra-Leanovich/electron-base#readme",
+  "devDependencies": {
+    "electron": "^24.1.2"
+  }
+}
