@@ -1,39 +1,35 @@
-import { app } from "electron";
-
-app.on("will-finish-launching", () => {
-  console.log("will finish launching");
-});
+import { app, BrowserWindow } from "electron";
 
 app.on("ready", () => {
-  console.log("ready");
-});
+  let window = new BrowserWindow({
+    width: 800,
+    height: 800,
+    show: false,
+    backgroundColor: "#2980b9",
 
-app.whenReady().then(() => console.log("app is ready"));
+    // frame: false, // hide titlebar and buttons and cant move window
 
-app.on("before-quit", () => console.log("before quit"));
-app.on("will-quit", () => console.log("will quit")); // порядок отображния за счет методов жизненных циклов
-app.on("quit", () => console.log("quit"));
+    titleBarStyle: "hidden", // hide titlebar  and cant move window
 
-app.whenReady().then(() => {
-  setTimeout(() => {
-    app.quit();
-  }, 2000);
-});
+    //to make it moved add to the css
+    // .titlebar {
+    //   height: 34px;
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    //   width: 100%;
+    //   -webkit-app-region: drag;
+    // }
 
-//запрет на вызов второго экземпляра приложения
-const lock = app.requestSingleInstanceLock();
-
-if (!lock) {
-  app.quit();
-} else {
-  app.on("second-instance", () => {
-    console.log("second");
-    if (win) {
-      win.focus();
-    }
+    //modeint is not safe
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
-}
 
-app.whenReady().then(() => {
-  app.showAboutPanel();
+  window.loadFile("renderer/index.html");
+
+  window.on("ready-to-show", () => {
+    window.show();
+  });
 });
