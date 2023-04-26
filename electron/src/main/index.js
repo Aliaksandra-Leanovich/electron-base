@@ -1,27 +1,70 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu, MenuItem } from "electron";
 
-app.on("ready", () => {
+const MenuTeplate = [
+  {
+    label: "MyApp",
+    submenu: [
+      {
+        role: "about",
+      },
+      {
+        type: "separator",
+      },
+      {
+        role: "services",
+      },
+      {
+        type: "separator",
+      },
+      {
+        role: "hide",
+      },
+      {
+        role: "hideothers",
+      },
+      {
+        role: "unhide",
+      },
+      {
+        type: "separator",
+      },
+      {
+        role: "quit",
+      },
+    ],
+  },
+  {
+    label: " Custom Menu",
+    submenu: [{ label: "Custom Item " }],
+  },
+];
+
+const ctxMenuTemplate = [
+  {
+    label: "Option 1",
+  },
+  {
+    type: "separator",
+  },
+  {
+    label: "Option 2",
+  },
+  {
+    label: "Option 3",
+  },
+];
+
+const ctxMenu = new Menu.buildFromTemplate(ctxMenuTemplate);
+
+const createMenu = () => {
+  const menu = new Menu.buildFromTemplate(MenuTeplate);
+  Menu.setApplicationMenu(menu);
+};
+
+const createWindow = () => {
   let window = new BrowserWindow({
     width: 800,
     height: 800,
-    show: false,
-    backgroundColor: "#2980b9",
-
-    // frame: false, // hide titlebar and buttons and cant move window
-
-    titleBarStyle: "hidden", // hide titlebar  and cant move window
-
-    //to make it moved add to the css
-    // .titlebar {
-    //   height: 34px;
-    //   position: absolute;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100%;
-    //   -webkit-app-region: drag;
-    // }
-
-    //modeint is not safe
     webPreferences: {
       nodeIntegration: true,
     },
@@ -32,4 +75,38 @@ app.on("ready", () => {
   window.on("ready-to-show", () => {
     window.show();
   });
+
+  window.webContents.on("context-menu", (event, params) => {
+    ctxMenu.popup(window, params.x, params.y);
+  });
+};
+
+app.on("ready", () => {
+  createMenu();
+  createWindow();
+  //SECOND VARIANT
+
+  //FIRST VARIANT
+  // menu.append(
+  //   new MenuItem({
+  //     label: "MyApp",
+  //     submenu: [
+  //       new MenuItem({
+  //         label: "Option 1",
+  //         click() {
+  //           console.log("Option 1 Click");
+  //         },
+  //       }),
+  //       new MenuItem({
+  //         type: "separator",
+  //       }),
+  //       new MenuItem({
+  //         label: "Option 2",
+  //         click() {
+  //           console.log("Option 2 Click");
+  //         },
+  //       }),
+  //     ],
+  //   })
+  // );
 });
